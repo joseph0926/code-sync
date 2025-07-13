@@ -1,0 +1,4 @@
+.next
+dist
+prisma
+pnpm-lock.yaml
