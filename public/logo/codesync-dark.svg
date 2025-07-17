@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="256" viewBox="0 0 1024 256" fill="none">
+
+<defs>
+  <linearGradient id="grad-sync" x1="0%" y1="0%" x2="100%" y2="100%">
+    <stop offset="0%" stop-color="#06B6D4" />
+    <stop offset="100%" stop-color="#0EA5E9" />
+  </linearGradient>
+</defs>
+
+<rect width="100%" height="100%" fill="#020617"/>
+<g transform="translate(48,28) scale(0.39)">
+<g id="icon">
+  <path d="M120 96 C88 96 80 128 80 160 C80 200 112 208 112 256 C112 304 80 312 80 352 C80 384 88 416 120 416 L150 416 L150 368 L136 368 C120 368 120 352 120 352 C120 336 144 320 144 256 C144 192 120 176 120 160 C120 160 120 144 136 144 L150 144 L150 96 Z" fill="#8B5CF6" />
+<circle cx="304" cy="256" r="128" stroke="url(#grad-sync)" stroke-width="48" stroke-linecap="round" stroke-dasharray="780" stroke-dashoffset="120" />
+<path d="M424 196 L472 148 L448 148 L448 124 Z" fill="url(#grad-sync)" />
+<path d="M420 64 L460 144 L436 144 L428 172 Z" fill="#22C55E"/>
+<path d="M372 32 L404 104 L388 104 L382 130 Z" fill="#22C55E"/>
+</g>
+</g>
+<text x="288" y="160.0" font-family="Pretendard, sans-serif" font-size="160" font-weight="600" fill="#FFFFFF">CodeSync</text>
+</svg>

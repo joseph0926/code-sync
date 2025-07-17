@@ -1,12 +1,11 @@
 # CodeSync
 
 <div align="center">
-  <img src="https://github.com/your-org/codesync/assets/logo.png" alt="CodeSync Logo" width="128" height="128">
+  <img src="public/logo/codesync-logo.png" alt="CodeSync Logo" width="128" height="128">
   
   <h3>GitHub Pull Request를 실시간 협업 코드 리뷰 세션으로 변환하세요</h3>
   
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-  <!-- [![npm version](https://img.shields.io/npm/v/@codesync/core.svg)](https://www.npmjs.com/package/@codesync/core) -->
   
   [문서](https://codesync.dev/docs) • [데모](https://demo.codesync.dev) • [블로그](https://codesync.dev/blog)
 </div>
@@ -27,9 +26,7 @@ CodeSync는 비동기적인 GitHub PR 리뷰와 실시간 협업의 필요성 �
 
 ## 데모
 
-<div align="center">
-  <img src="https://github.com/your-org/codesync/assets/demo.gif" alt="CodeSync Demo" width="800">
-</div>
+// ...
 
 ## 빠른 시작
 
