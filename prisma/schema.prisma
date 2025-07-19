@@ -6,3 +6,166 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+enum SessionState {
+  ACTIVE
+  ENDED
+  ARCHIVED
+}
+
+enum SessionRole {
+  HOST
+  REVIEWER
+  VIEWER
+}
+
+model Account {
+  id String @id @default(cuid())
+
+  type              String
+  provider          String
+  providerAccountId String @map("provider_account_id")
+
+  refresh_token String? @db.Text
+  access_token  String? @db.Text
+  expires_at    Int?
+  token_type    String?
+  scope         String?
+  id_token      String? @db.Text
+  session_state String?
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id String @id @default(cuid())
+
+  sessionToken String   @unique @map("session_token")
+  expires      DateTime
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+
+  githubId    String? @unique @map("github_id")
+  githubLogin String? @unique @map("github_login")
+
+  accounts Account[]
+  sessions Session[]
+
+  hostedCodeSessions      CodeSession[]        @relation("HostedSessions")
+  codeSessionParticipants SessionParticipant[]
+  annotations             Annotation[]
+
+  @@map("users")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verification_tokens")
+}
+
+model CodeSession {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+
+  prOwner   String  @map("pr_owner")
+  prRepo    String  @map("pr_repo")
+  prNumber  Int     @map("pr_number")
+  prTitle   String? @map("pr_title")
+  prHeadSha String? @map("pr_head_sha")
+
+  startedAt DateTime? @map("started_at")
+  endedAt   DateTime? @map("ended_at")
+
+  inviteToken String @unique @default(cuid()) @map("invite_token")
+
+  state SessionState @default(ACTIVE)
+
+  hostId String @map("host_id")
+  host   User   @relation("HostedSessions", fields: [hostId], references: [id])
+
+  participants SessionParticipant[]
+  annotations  Annotation[]
+
+  @@index([prOwner, prRepo, prNumber])
+  @@index([state])
+  @@map("code_sessions")
+}
+
+model SessionParticipant {
+  id String @id @default(cuid())
+
+  role     SessionRole @default(VIEWER)
+  joinedAt DateTime    @default(now()) @map("joined_at")
+  leftAt   DateTime?   @map("left_at")
+
+  lastActiveAt DateTime? @map("last_active_at")
+  cursorData   Json?     @map("cursor_data")
+
+  sessionId String      @map("session_id")
+  session   CodeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, userId])
+  @@index([sessionId])
+  @@index([userId])
+  @@map("session_participants")
+}
+
+model Annotation {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  filePath  String @map("file_path")
+  startLine Int    @map("start_line")
+  endLine   Int    @map("end_line")
+
+  body     String  @db.Text
+  threadId String? @map("thread_id")
+
+  githubCommentId String?   @map("github_comment_id")
+  pushedToGithub  Boolean   @default(false) @map("pushed_to_github")
+  pushedAt        DateTime? @map("pushed_at")
+
+  resolvedAt DateTime? @map("resolved_at")
+
+  sessionId String      @map("session_id")
+  session   CodeSession @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  authorId String @map("author_id")
+  author   User   @relation(fields: [authorId], references: [id])
+
+  parentId String?     @map("parent_id")
+  parent   Annotation? @relation("AnnotationReplies", fields: [parentId], references: [id])
+
+  replies Annotation[] @relation("AnnotationReplies")
+
+  @@index([sessionId, filePath])
+  @@index([threadId])
+  @@index([githubCommentId])
+  @@map("annotations")
+}

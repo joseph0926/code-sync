@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@auth/prisma-adapter':
+        specifier: ^2.10.0
+        version: 2.10.0(@prisma/client@6.11.1(prisma@6.11.1(typescript@5.8.3))(typescript@5.8.3))
       '@neondatabase/serverless':
         specifier: ^1.0.1
         version: 1.0.1
@@ -126,6 +129,11 @@ packages:
         optional: true
       nodemailer:
         optional: true
+
+  '@auth/prisma-adapter@2.10.0':
+    resolution: {integrity: sha512-EliOQoTjGK87jWWqnJvlQjbR4PjQZQqtwRwPAe108WwT9ubuuJJIrL68aNnQr4hFESz6P7SEX2bZy+y2yL37Gw==}
+    peerDependencies:
+      '@prisma/client': '>=2.26.0 || >=3 || >=4 || >=5 || >=6'
 
   '@emnapi/core@1.4.4':
     resolution: {integrity: sha512-A9CnAbC6ARNMKcIcrQwq6HeHCjpcBZ5wSx4U01WXCqEKlrzB9F9315WDNHkrs2xbx7YjjSxbUYxuN6EQzpcY2g==}
@@ -2292,6 +2300,15 @@ snapshots:
       oauth4webapi: 3.6.0
       preact: 10.24.3
       preact-render-to-string: 6.5.11(preact@10.24.3)
+
+  '@auth/prisma-adapter@2.10.0(@prisma/client@6.11.1(prisma@6.11.1(typescript@5.8.3))(typescript@5.8.3))':
+    dependencies:
+      '@auth/core': 0.40.0
+      '@prisma/client': 6.11.1(prisma@6.11.1(typescript@5.8.3))(typescript@5.8.3)
+    transitivePeerDependencies:
+      - '@simplewebauthn/browser'
+      - '@simplewebauthn/server'
+      - nodemailer
 
   '@emnapi/core@1.4.4':
     dependencies:
